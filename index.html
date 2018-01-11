@@ -1,37 +1,80 @@
 <!doctype html>
 <html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <link rel="manifest" href="site.webmanifest">
-        <link rel="apple-touch-icon" href="icon.png">
-        <!-- Place favicon.ico in the root directory -->
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-    </head>
-    <body>
-        <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
+</head>
+<body>
+    <!--[if lte IE 9]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
 
-        <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
-        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
+    <!-- Add your site or application content here -->
 
-        <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
-        <script>
-            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
-            ga('create','UA-XXXXX-Y','auto');ga('send','pageview')
-        </script>
-        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
-    </body>
-</html>
+
+    <div class="container-fluid">
+        <div class="wrapper row">
+            <nav id="sidebar" class="col-md-4">
+                <div class="sidebar-header">
+                    <h3>Dance Venues in SG</h3>
+                </div>
+                <div class="side-menu-container">
+                    <ul class="nav navbar-nav">
+                        <li class="panel panel-default">
+                            <a data-toggle="collapse" href="#dropdown-dancestyle" class="drop-category">
+                                Dance Styles
+                                <span class="caret"></span>
+                            </a>
+                            <div id="dropdown-dancestyle" class="panel-collapse collapse in">
+                                <div class="panel-body">
+
+                                    <ul class="nav navbar-nav" data-bind="foreach: danceList()">
+                                        <li><a data-bind="css: visible() == true ? 'activeDanceStyle' : 'inactiveDanceStyle', text: dancestyle, click: $parent.selectDancestyle"></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+
+                <ul data-bind='foreach: { data: venue_list }'>
+                    <li>
+                        <span data-bind="text: place"></span>
+                    </ul>
+            </nav>
+            <div id="content" class="col-md-8">
+                <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
+                    <i class="glyphicon glyphicon-align-left"></i>
+                    Toggle Sidebar
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+                <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+                <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+                <script type="text/javascript" src="js/vendor/knockout-3.4.2.js"></script>
+
+                <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
+                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+                <script src="js/plugins.js"></script>
+                <script src="js/venues.js"></script>
+                <script src="js/main.js"></script>
+
+
+
+
+            </body>
+            </html>
