@@ -14,39 +14,28 @@ function initialize() {
         mapTypeControl: false,
         disableDefaultUI: true
     };
-    if($(window).width() <= 1080) {
-        mapOptions.zoom = 16;
-    }
-    if ($(window).width() < 850 || $(window).height() < 595) {
-        // hideNav();
-    }
+
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 }
 
-// collapsible dide bar
-
-$(document).ready(function () {
-
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-    });
-
-});
 
 /*  Adds an observable value for each entity in reducedDanceList
 *
-*
 */
 
-var Dancestyle = function (dancestyle) {
-    var self = this;
+let Dancestyle = function (dancestyle) {
+    let self = this;
     self.dancestyle = dancestyle;
     self.visible = ko.observable(true);
 }
 
-var Venue = function(venue, weather) {
-    var self = this;
+/* Venue object that holds related info
+*
+*/
+
+let Venue = function(venue, weather) {
+    let self = this;
 
     self.place = venue.place;
     self.description = venue.notes;
@@ -61,7 +50,7 @@ var Venue = function(venue, weather) {
     self.weatherIcon = weather.weatherIcon;
 
     self.weatherText = weather.weatherText;
-    var img_size = '100x100';
+    let img_size = '100x100';
 
 
     self.marker = new google.maps.Marker({
@@ -72,32 +61,32 @@ var Venue = function(venue, weather) {
     // Html to create the infowindow which will present some useful info about the venue
 
     contentString = '<div class="container-fluid info">'+
-	    '<div class="row img-rating-header-row">'+
-		'<div class="col-sm-4">'+
-		'<img class="mainImg" src="'+self.img_url+'" height="100" width="100">'+
-		'</div>'+
-		'<div class="col-sm-8">'+
-		'<h3 class="firstHeading"><a href="'+self.url+'">'+self.place+'</a></h3>'+
-	    '</div>'+
-	    '</div>'+
-	    '<div class="row content-row">'+
-		'<div class="col-sm-12">'+
-		'<p>'+self.description+'</p>'+
-	    '<p>Forecast for next Event</p>'+
-	    '</div>'+
-	    '</div>'+
-	    '<div class="row weather-row">'+
-        '<div class="col-sm-4">'+
-	    '<img src="'+self.weatherIcon+'">'+
-	    '</div>'+
-	    '<div class="col-sm-8">'+
-	    '<p>'+self.weatherText+'</p>'+
-	    '</div>'+
-	    '</div>'+
-	    '<div class="row homepage-url-row">'+
-		'<div class="col-sm-12"><a href="'+self.url+'">Venue link</a></div>'+
-	    '</div>'+
-	    '<div>';
+    '<div class="row img-rating-header-row">'+
+    '<div class="col-sm-4">'+
+    '<img class="mainImg" src="'+self.img_url+'" height="100" width="100">'+
+    '</div>'+
+    '<div class="col-sm-8">'+
+    '<h3 class="firstHeading"><a href="'+self.url+'">'+self.place+'</a></h3>'+
+    '</div>'+
+    '</div>'+
+    '<div class="row content-row">'+
+    '<div class="col-sm-12">'+
+    '<p>'+self.description+'</p>'+
+    '<p>Forecast for next Event</p>'+
+    '</div>'+
+    '</div>'+
+    '<div class="row weather-row">'+
+    '<div class="col-sm-4">'+
+    '<img src="'+self.weatherIcon+'">'+
+    '</div>'+
+    '<div class="col-sm-8">'+
+    '<p>'+self.weatherText+'</p>'+
+    '</div>'+
+    '</div>'+
+    '<div class="row homepage-url-row">'+
+    '<div class="col-sm-12"><a href="'+self.url+'">Venue link</a></div>'+
+    '</div>'+
+    '<div>';
 
 
     // Google Maps Infowindow is created
@@ -126,7 +115,7 @@ let ViewModel = function() {
     // Gather dancestyles that are visible
 
     self.visibleDanceStyle = ko.computed(function(){
-        var visibleList = {};
+        let visibleList = {};
         self.danceList().forEach(function ( dancestyle ){
             visibleList[dancestyle.dancestyle] = dancestyle.visible();
         });
@@ -134,11 +123,11 @@ let ViewModel = function() {
         return visibleList
     });
 
-//    Run AJAX calls to learn the weather for the event
-//    Builds the Venue and Dancestyle models
+    //    Run AJAX calls to learn the weather for the event
+    //    Builds the Venue and Dancestyle models
 
     venue_list.forEach(function ( restObj ){
-        var api_url = 'http://api.wunderground.com/api/83e4eaf81392612c/forecast10day/q/Singapore/Singapore.json';
+        let api_url = 'http://api.wunderground.com/api/83e4eaf81392612c/forecast10day/q/Singapore/Singapore.json';
 
         $.ajax({
             url: api_url,
@@ -146,25 +135,25 @@ let ViewModel = function() {
             dataType: 'json'
         }).done(function(data){
 
-            var d = new Date();
-            var weather_data = data.forecast.txt_forecast;
-            var text;
-	        var dif = 0;
+            let d = new Date();
+            let weather_data = data.forecast.txt_forecast;
+            let text;
+            let dif = 0;
 
-	        if(d.getDay()<=restObj.day){
+            if(d.getDay()<=restObj.day){
                 dif = restObj.day - d.getDay();
             }
-	        if(d.getDay()>restObj.day){
-		        dif = restObj.day - d.getDay() + 7;
-	        }
+            if(d.getDay()>restObj.day){
+                dif = restObj.day - d.getDay() + 7;
+            }
 
-	        console.log(weather_data.forecastday[dif*2].fcttext_metric);
-            var weather = {
+            // console.log(weather_data.forecastday[dif*2].fcttext_metric);    Debug
+            let weather = {
                 weatherText: weather_data.forecastday[dif*2].fcttext_metric,
                 weatherIcon: weather_data.forecastday[dif*2].icon_url
             };
 
-            console.log(weather);
+            // console.log(weather);    Debug
             self.venueList.push(new Venue(restObj, weather));
 
         }).fail(function(){
@@ -183,18 +172,18 @@ let ViewModel = function() {
     }
 
     //
-// https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+    // https://developers.google.com/maps/documentation/javascript/examples/marker-animations
 
-self.toggleMarker = function(venue) {
-    if (self.windowOpen() !== venue.infoWindow) {
-        self.closeWindows();
-        venue.marker.setAnimation(3);
-        venue.infoWindow.open(map, venue.marker);
-        self.windowOpen(venue.infoWindow);
-    } else {
-        self.closeWindows();
-    }
-};
+    self.toggleMarker = function(venue) {
+        if (self.windowOpen() !== venue.infoWindow) {
+            self.closeWindows();
+            venue.marker.setAnimation(3);
+            venue.infoWindow.open(map, venue.marker);
+            self.windowOpen(venue.infoWindow);
+        } else {
+            self.closeWindows();
+        }
+    };
 
     // Filters Venues for the selected dance style
     // Is called every time a different dance style is selected
@@ -229,24 +218,33 @@ self.toggleMarker = function(venue) {
 
     // select dancestyle
 
-self.selectDancestyle = function(dancestyle) {
-    self.closeWindows();
-    console.log("Dancestyle selected", dancestyle);
-    self.clearAll();
-    dancestyle.visible(true);
-}
+    self.selectDancestyle = function(dancestyle) {
+        self.closeWindows();
+        self.clearAll();
+        dancestyle.visible(true);
+    }
 
-self.clearAll = function() {
-    self.danceList().forEach(function (dancestyle) {
-        console.log('it is cleared');
-        dancestyle.visible(false);
-    });
+    // clears any choice
 
-    self.hasFiltered(true);
-};
+    self.clearAll = function() {
+        self.danceList().forEach(function (dancestyle) {
+            // console.log('it is cleared');   debug
+            dancestyle.visible(false);
+        });
 
+        self.hasFiltered(true);
+    };
 
+    // Shows all the dance styles, any filtering is cancelled
 
+    self.showAll = function() {
+        self.closeWindows();
+        self.danceList().forEach(function (dancestyle) {
+            dancestyle.visible(true);
+        });
+
+        self.hasFiltered(false);
+    };
 
 };
 

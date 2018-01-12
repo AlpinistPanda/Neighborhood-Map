@@ -29,7 +29,7 @@
                 <div class="btn-group" data-bind="foreach: danceList()">
                     <button type="button" class="btn btn-primary" data-bind="css: visible() == true ? 'activeDanceStyle' : 'inactiveDanceStyle', text: dancestyle, click: $parent.selectDancestyle"></button>
                 </div>
-                <button class="btn btn-primary" type="submit" data-bind="click : clearAll">All</button>
+                <button class="btn btn-primary" type="submit" data-bind="click : showAll">All</button>
             </div>
             <div id="venues" class="col-md-8">
                 <ul data-bind="foreach: getMarkers()">
