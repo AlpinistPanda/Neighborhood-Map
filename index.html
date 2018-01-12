@@ -16,65 +16,52 @@
 </head>
 <body>
     <!--[if lte IE 9]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser.
+     Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
 
-
     <div class="container-fluid">
-        <div class="wrapper row">
-            <nav id="sidebar" class="col-md-4">
-                <div class="sidebar-header">
-                    <h3>Dance Venues in SG</h3>
+        <div id="top-bar" class="row">
+            <div class="col-md-4">
+                <h3>Dance Venues in SG</h3>
+                <div class="btn-group" data-bind="foreach: danceList()">
+                    <button type="button" class="btn btn-primary" data-bind="css: visible() == true ? 'activeDanceStyle' : 'inactiveDanceStyle', text: dancestyle, click: $parent.selectDancestyle"></button>
                 </div>
-                <div class="side-menu-container">
-                    <ul class="nav navbar-nav">
-                        <li class="panel panel-default">
-                            <a data-toggle="collapse" href="#dropdown-dancestyle" class="drop-category">
-                                Dance Styles
-                                <span class="caret"></span>
-                            </a>
-                            <div id="dropdown-dancestyle" class="panel-collapse collapse in">
-                                <div class="panel-body">
-
-                                    <ul class="nav navbar-nav" data-bind="foreach: danceList()">
-                                        <li><a data-bind="css: visible() == true ? 'activeDanceStyle' : 'inactiveDanceStyle', text: dancestyle, click: $parent.selectDancestyle"></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-
-                <ul data-bind='foreach: { data: venue_list }'>
+                <button class="btn btn-primary" type="submit" data-bind="click : clearAll">All</button>
+            </div>
+            <div id="venues" class="col-md-8">
+                <ul data-bind="foreach: getMarkers()">
                     <li>
-                        <span data-bind="text: place"></span>
-                    </ul>
-            </nav>
-            <div id="content" class="col-md-8">
-                <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
-                    <i class="glyphicon glyphicon-align-left"></i>
-                    Toggle Sidebar
-                </button>
+                        <button data-bind="click: $parent.toggleMarker">
+                            <span data-bind="text: place"></span>
+                            <span data-bind="visible: $parent.windowOpen() == infoWindow" class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
-    </div>
+
+        <div class="row">
+            <div id="map-canvas" ></div>
+        </div>
 
 
+        </div>
 
-                <script src="js/vendor/modernizr-3.5.0.min.js"></script>
-                <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-                <script type="text/javascript" src="js/vendor/knockout-3.4.2.js"></script>
+        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+        <script type="text/javascript" src="js/vendor/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="js/vendor/knockout-3.4.2.js"></script>
 
-                <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
-                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
-                <script src="js/plugins.js"></script>
-                <script src="js/venues.js"></script>
-                <script src="js/main.js"></script>
+        <!-- <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script> -->
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/venues.js"></script>
+        <script src="js/main.js"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFWTpYO-r_DTdCyCgUVRpdk_G-zkFqxYE&v=3&callback=initialize" onerror="googleError()"></script>
 
-
-
-            </body>
-            </html>
+    </body>
+</html>
