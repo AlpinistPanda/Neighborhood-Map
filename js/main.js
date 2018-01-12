@@ -2,10 +2,6 @@
 let reducedDanceList = ['Salsa', 'Lindy Hop', 'Hip Hop'];  // Dance List
 
 let map = {};
-let marker = {};
-let infoWindow = {}
-
-
 
 function initialize() {
     let mapOptions = {
@@ -14,7 +10,6 @@ function initialize() {
         mapTypeControl: false,
         disableDefaultUI: true
     };
-
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 }
@@ -28,7 +23,7 @@ let Dancestyle = function (dancestyle) {
     let self = this;
     self.dancestyle = dancestyle;
     self.visible = ko.observable(true);
-}
+};
 
 /* Venue object that holds related info
 *
@@ -50,8 +45,6 @@ let Venue = function(venue, weather) {
     self.weatherIcon = weather.weatherIcon;
 
     self.weatherText = weather.weatherText;
-    let img_size = '100x100';
-
 
     self.marker = new google.maps.Marker({
         position: self.coordinates,
@@ -120,7 +113,7 @@ let ViewModel = function() {
             visibleList[dancestyle.dancestyle] = dancestyle.visible();
         });
 
-        return visibleList
+        return visibleList;
     });
 
     //    Run AJAX calls to learn the weather for the event
@@ -137,7 +130,6 @@ let ViewModel = function() {
 
             let d = new Date();
             let weather_data = data.forecast.txt_forecast;
-            let text;
             let dif = 0;
 
             if(d.getDay()<=restObj.day){
@@ -169,7 +161,7 @@ let ViewModel = function() {
             self.windowOpen().close();
             self.windowOpen(false);
         }
-    }
+    };
 
     //
     // https://developers.google.com/maps/documentation/javascript/examples/marker-animations
@@ -185,13 +177,16 @@ let ViewModel = function() {
         }
     };
 
-    // Filters Venues for the selected dance style
-    // Is called every time a different dance style is selected
+    /**
+    * @description Filters Venues for the selected dance style
+    *  Is called every time a different dance style is selected
+    */
+
 
     self.getMarkers = ko.computed(function() {
         return self.venueList().filter(function (venue) {
             if (self.visibleDanceStyle()[venue.dancestyle]) {
-                if (venue.is_visible == false) {
+                if (venue.is_visible === false) {
                     venue.marker.setMap(map);
                     venue.marker.setAnimation(google.maps.Animation.DROP);
 
@@ -202,52 +197,51 @@ let ViewModel = function() {
                     });
                 }
                 venue.is_visible = true;
-
                 return true;
-
             } else {
                 venue.marker.setMap(null);
                 venue.is_visible = false;
-
                 return false;
             }
         });
     }, self);
 
-
-
-    // select dancestyle
+    /**
+    * @description Selects and shows venues that a dance style is performed
+    * @param {dancestyle} dancestyle
+    */
 
     self.selectDancestyle = function(dancestyle) {
         self.closeWindows();
         self.clearAll();
         dancestyle.visible(true);
-    }
+    };
 
-    // clears any choice
+    /**
+    * @description Clears all the selected dance venues
+    *
+    */
 
     self.clearAll = function() {
-        self.danceList().forEach(function (dancestyle) {
-            // console.log('it is cleared');   debug
+        self.danceList().forEach(function(dancestyle) {
             dancestyle.visible(false);
         });
-
         self.hasFiltered(true);
     };
 
-    // Shows all the dance styles, any filtering is cancelled
+    /**
+    * @description Shows all the dance styles, any filtering is cancelled
+    *
+    */
 
     self.showAll = function() {
         self.closeWindows();
         self.danceList().forEach(function (dancestyle) {
             dancestyle.visible(true);
         });
-
         self.hasFiltered(false);
     };
-
 };
-
 
 let viewM = new ViewModel();
 
