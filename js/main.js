@@ -3,6 +3,11 @@ let reducedDanceList = ['Salsa', 'Lindy Hop', 'Hip Hop'];  // Dance List
 
 let map = {};
 
+/**
+* @description Initialize google maps
+*
+*/
+
 function initialize() {
     let mapOptions = {
         zoom: 15,
@@ -14,19 +19,21 @@ function initialize() {
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 }
 
-
-/*  Adds an observable value for each entity in reducedDanceList
-*
+/**
+* @description Adds an observable value for each entity in reducedDanceList
+* @param {dancestyle} dancestyle
 */
 
-let Dancestyle = function (dancestyle) {
+let Dancestyle = function(dancestyle) {
     let self = this;
     self.dancestyle = dancestyle;
     self.visible = ko.observable(true);
 };
 
-/* Venue object that holds related info
-*
+/**
+* @description Adds an observable value for each entity in reducedDanceList
+* @param {venue} venue
+* @param {weather} weather
 */
 
 let Venue = function(venue, weather) {
@@ -81,7 +88,6 @@ let Venue = function(venue, weather) {
     '</div>'+
     '<div>';
 
-
     // Google Maps Infowindow is created
 
     self.infoWindow = new google.maps.InfoWindow({
@@ -89,6 +95,10 @@ let Venue = function(venue, weather) {
     });
 };
 
+
+/**
+* @description knockout viewmodel
+*/
 
 let ViewModel = function() {
     let self = this;
@@ -99,13 +109,17 @@ let ViewModel = function() {
     self.hasFiltered = ko.observable(false);
     self.windowOpen = ko.observable(false);
 
-    // DanceList
+    /**
+    * @description Pushes reduceddancelist into dancelist array
+    */
 
     reducedDanceList.forEach(function(name) {
         self.danceList.push(new Dancestyle(name));
     });
 
-    // Gather dancestyles that are visible
+    /**
+    * @description Gather dancestyles that are visible
+    */
 
     self.visibleDanceStyle = ko.computed(function(){
         let visibleList = {};
@@ -116,10 +130,13 @@ let ViewModel = function() {
         return visibleList;
     });
 
-    //    Run AJAX calls to learn the weather for the event
-    //    Builds the Venue and Dancestyle models
+    /**
+    * @description Run AJAX calls to learn the weather for the event
+    *  Builds the Venue and Dancestyle models
+    * @param {venue} venueObj
+    */
 
-    venue_list.forEach(function ( restObj ){
+    venue_list.forEach(function(venueObj) {
         let api_url = 'http://api.wunderground.com/api/83e4eaf81392612c/forecast10day/q/Singapore/Singapore.json';
 
         $.ajax({
@@ -132,30 +149,29 @@ let ViewModel = function() {
             let weather_data = data.forecast.txt_forecast;
             let dif = 0;
 
-            if(d.getDay()<=restObj.day){
-                dif = restObj.day - d.getDay();
+            if(d.getDay()<=venueObj.day){
+                dif = venueObj.day - d.getDay();
             }
-            if(d.getDay()>restObj.day){
-                dif = restObj.day - d.getDay() + 7;
+            if(d.getDay()>venueObj.day){
+                dif = venueObj.day - d.getDay() + 7;
             }
 
-            // console.log(weather_data.forecastday[dif*2].fcttext_metric);    Debug
             let weather = {
                 weatherText: weather_data.forecastday[dif*2].fcttext_metric,
                 weatherIcon: weather_data.forecastday[dif*2].icon_url
             };
 
-            // console.log(weather);    Debug
-            self.venueList.push(new Venue(restObj, weather));
+            self.venueList.push(new Venue(venueObj, weather));
 
         }).fail(function(){
             self.errorMessage('Wunderground API Failed');
         });
-
     });
 
+    /**
+    * @description Check (and closes) if another window was previously called.
+    */
 
-    // Check (and closes) if another window was previously called.
     self.closeWindows = function() {
         if (self.windowOpen()) {
             self.windowOpen().close();
@@ -163,8 +179,10 @@ let ViewModel = function() {
         }
     };
 
-    //
-    // https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+    /**
+    * @description Animates the marker
+    * ref; https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+    */
 
     self.toggleMarker = function(venue) {
         if (self.windowOpen() !== venue.infoWindow) {
@@ -181,7 +199,6 @@ let ViewModel = function() {
     * @description Filters Venues for the selected dance style
     *  Is called every time a different dance style is selected
     */
-
 
     self.getMarkers = ko.computed(function() {
         return self.venueList().filter(function (venue) {

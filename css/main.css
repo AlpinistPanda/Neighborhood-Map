@@ -1,36 +1,74 @@
 
+/* For smartphones */
 
-/* Ozgun
-*/
 
-#map-canvas {
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    position: absolute;
-    margin: 0;
+    #map-canvas {
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        position: absolute;
+        margin: 0;
+    }
+
+    .activeDanceStyle{
+        background-color: rgb(99, 245, 101);
+    }
+
+    .inactiveDanceStyle{
+        background-color: blue;
+    }
+
+    #venues li{
+        list-style: none;
+        font-size: 0.9em;
+        display: inline;
+    }
+
+
+/* For tables */
+@media (min-width:641px) {
+    #map-canvas {
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        position: absolute;
+        margin: 0;
+    }
+
+    .activeDanceStyle{
+        background-color: rgb(99, 245, 101);
+    }
+
+    .inactiveDanceStyle{
+        background-color: blue;
+    }
+
+    #venues li{
+        list-style: none;
+        font-size: 0.9em;
+        display: inline;
+    }
 }
+@media (min-width:961px) {
+    #map-canvas {
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        position: absolute;
+        margin: 0;
+    }
 
-.big-box {
-    height: 65px
-}
+    .activeDanceStyle {
+        background-color: rgb(99, 245, 101);
+    }
 
+    .inactiveDanceStyle {
+        background-color: blue;
+    }
 
-ul#ozgun li {
-    display:inline;
-}
-
-.activeDanceStyle{
-    background-color: red;
-}
-
-
-.inactiveDanceStyle{
-    background-color: blue;
-}
-
-#venues li{
-    list-style: none;
-    font-size: 0.9em;
-    display: inline;
+    #venues li {
+        list-style: none;
+        font-size: 0.9em;
+        display: inline;
+    }
 }
