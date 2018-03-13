@@ -36,7 +36,7 @@ let Dancestyle = function(dancestyle) {
 */
 let googleError = function() {
   alert('Google Maps is not working try again!');
-}
+};
 
 /**
 * @description Adds an observable value for each entity in reducedDanceList
@@ -170,7 +170,6 @@ let ViewModel = function() {
 
             let d = new Date();
             let weather_data = data.forecast.txt_forecast;
-            alert(data.forecast.txt_forecast);
             let dif = 0;
 
             if(d.getDay()<=venueObj.day){
@@ -179,7 +178,6 @@ let ViewModel = function() {
             if(d.getDay()>venueObj.day){
                 dif = venueObj.day - d.getDay() + 7;
             }
-
 
             let weather = {
                 weatherText: weather_data.forecastday[dif*2].fcttext_metric,
