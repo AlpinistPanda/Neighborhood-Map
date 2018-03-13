@@ -25,7 +25,7 @@
     }
 
 
-/* For tables */
+/* For tablets */
 @media (min-width:641px) {
     #map-canvas {
         width: 100%;
@@ -71,4 +71,9 @@
         font-size: 0.9em;
         display: inline;
     }
+}
+
+.firstHeading{
+  padding-top: 20%;
+  padding-left: 5%;
 }

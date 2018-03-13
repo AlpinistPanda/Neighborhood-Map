@@ -10,7 +10,7 @@ let map = {};
 
 function initialize() {
     let mapOptions = {
-        zoom: 15,
+        zoom: 14,
         center: new google.maps.LatLng(1.286055, 103.8510605),
         mapTypeControl: false,
         disableDefaultUI: true
@@ -29,6 +29,14 @@ let Dancestyle = function(dancestyle) {
     self.dancestyle = dancestyle;
     self.visible = ko.observable(true);
 };
+
+/**
+* @description Handles Google maps error
+*
+*/
+let googleError = function() {
+  alert('Google Maps is not working try again!');
+}
 
 /**
 * @description Adds an observable value for each entity in reducedDanceList
@@ -59,6 +67,21 @@ let Venue = function(venue, weather) {
     });
 
     // Html to create the infowindow which will present some useful info about the venue
+
+    // Some default values
+    //
+     if (self.img_url === '') {
+       self.img_url = 'http://via.placeholder.com/100x100';
+     }
+
+     if (self.weatherIcon === '') {
+       self.img_url = 'http://via.placeholder.com/50x50';
+     }
+
+     if (self.url === '') {
+       self.url = '#';
+     }
+
 
     contentString = '<div class="container-fluid info">'+
     '<div class="row img-rating-header-row">'+
@@ -147,6 +170,7 @@ let ViewModel = function() {
 
             let d = new Date();
             let weather_data = data.forecast.txt_forecast;
+            alert(data.forecast.txt_forecast);
             let dif = 0;
 
             if(d.getDay()<=venueObj.day){
@@ -156,6 +180,7 @@ let ViewModel = function() {
                 dif = venueObj.day - d.getDay() + 7;
             }
 
+
             let weather = {
                 weatherText: weather_data.forecastday[dif*2].fcttext_metric,
                 weatherIcon: weather_data.forecastday[dif*2].icon_url
@@ -164,7 +189,12 @@ let ViewModel = function() {
             self.venueList.push(new Venue(venueObj, weather));
 
         }).fail(function(){
-            self.errorMessage('Wunderground API Failed');
+          let weather = {
+              weatherText: 'Unable to get a forecast',
+              weatherIcon: 'http://via.placeholder.com/50x50'
+          };
+            alert('Wunderground API Failed');
+            self.venueList.push(new Venue(venueObj, weather));
         });
     });
 
